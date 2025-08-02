@@ -91,3 +91,7 @@ docker-compose.override.yml
 # Backup files
 *.bak
 *.backup
+
+# Additional files to ignore
+*.env.broken
+.env.example
