@@ -1,0 +1,106 @@
+/* frontend/src/index.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --black: #121212;
+  --charcoal: #181818;
+  --jet: #282828;
+  --gray: #a7a7a7;
+  --light-gray: #e5e5e5;
+  --blue: #3ea6ff;
+  --red: #e50914;
+  --green: #28a745;
+}
+
+/* Reset some default browser styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  background-color: var(--black);
+  color: var(--light-gray);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* Basic container styling to center content */
+#root {
+  width: 100%;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #fff;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+p {
+  margin-bottom: 10px;
+  color: var(--gray);
+}
+
+/* Basic button styles */
+button {
+  display: inline-block;
+  background: var(--blue);
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0077cc;
+}
+
+button:disabled {
+  background-color: var(--jet);
+  color: var(--gray);
+  cursor: not-allowed;
+}
+
+/* Basic form control styles */
+.form-group {
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: var(--light-gray);
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group textarea,
+.form-group input[type="file"]::file-selector-button {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--jet);
+  border-radius: 5px;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  background-color: var(--charcoal);
+  color: var(--light-gray);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+}

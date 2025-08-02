@@ -1,0 +1,94 @@
+version: '3.8'
+
+services:
+  # MongoDB Database
+  mongodb:
+    image: mongo:7.0
+    container_name: smartdoc-mongodb
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password123
+      MONGO_INITDB_DATABASE: smartdoc
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+      - ./backend/scripts/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    networks:
+      - smartdoc-network
+
+  # Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: smartdoc-backend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 5001
+      MONGO_URI: mongodb://admin:password123@mongodb:27017/smartdoc?authSource=admin
+      JWT_SECRET: ${JWT_SECRET:-your-super-secret-jwt-key-change-in-production}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      OPENAI_MODEL: gpt-3.5-turbo
+      OPENAI_MAX_TOKENS: 200
+      OPENAI_MAX_RETRIES: 3
+      OPENAI_RETRY_DELAY: 1000
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:3000}
+      MAX_FILE_SIZE: 10485760
+      UPLOAD_DIR: uploads
+      RATE_LIMIT_WINDOW_MS: 900000
+      RATE_LIMIT_MAX_REQUESTS: 100
+      AUTH_RATE_LIMIT_MAX_REQUESTS: 5
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./backend/uploads:/app/uploads
+      - ./backend/logs:/app/logs
+    depends_on:
+      - mongodb
+    networks:
+      - smartdoc-network
+
+  # Frontend Application
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: smartdoc-frontend
+    restart: unless-stopped
+    environment:
+      REACT_APP_API_URL: ${REACT_APP_API_URL:-http://localhost:5001}
+      REACT_APP_ENVIRONMENT: production
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - smartdoc-network
+
+  # Nginx Reverse Proxy (Optional)
+  nginx:
+    image: nginx:alpine
+    container_name: smartdoc-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - smartdoc-network
+
+volumes:
+  mongodb_data:
+    driver: local
+
+networks:
+  smartdoc-network:
+    driver: bridge 

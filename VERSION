@@ -1,0 +1,21 @@
+SmartDoc AI V1.0.0
+
+Release Date: 2025-08-02
+Build: 348ff33
+
+Enhanced Features:
+- Enhanced PDF processing with OCR fallback
+- Advanced image support (TIFF, BMP)
+- Improved OCR accuracy with preprocessing
+- Increased file size limit to 10MB
+- Multi-language OCR support
+- Better error handling and recovery
+- Enhanced user experience with file input clearing
+- Comprehensive testing guide
+- Production deployment configurations
+
+Supported File Types:
+- PDFs (including scanned PDFs)
+- Images (JPEG, PNG, TIFF, BMP)
+- Documents (DOCX, DOC, TXT)
+- File size up to 10MB

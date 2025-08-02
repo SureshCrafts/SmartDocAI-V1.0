@@ -1,0 +1,1 @@
+This is a test document for SmartDoc AI. It contains some sample text that should be extracted and processed by the AI system. This document is designed to test the text extraction and AI summarization features.
