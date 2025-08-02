@@ -14,6 +14,7 @@ import {
     FormText,
     FormLink
 } from '../components/FormStyles';
+import PasswordInput from '../components/PasswordInput';
 
 function Login() {
     const [formData, setFormData] = useState({
@@ -72,8 +73,7 @@ function Login() {
                     />
                 </FormGroup>
                 <FormGroup>
-                    <Input
-                        type="password"
+                    <PasswordInput
                         id="password"
                         name="password"
                         value={password}

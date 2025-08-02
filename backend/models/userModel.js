@@ -50,9 +50,7 @@ const userSchema = mongoose.Schema(
     }
 );
 
-// Indexes for better query performance (removed duplicate declarations)
-userSchema.index({ email: 1 });
-userSchema.index({ username: 1 });
+// Indexes for better query performance
 userSchema.index({ isActive: 1 });
 
 // Virtual for account lock status

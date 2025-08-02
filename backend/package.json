@@ -1,12 +1,14 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "SmartDoc AI Backend API",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "start:prod": "node server.js",
+    "start:corporate": "NODE_ENV=corporate nodemon server.js"
   },
-  "keywords": [],
+  "keywords": ["ai", "document-processing", "api"],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
@@ -33,5 +35,9 @@
   },
   "devDependencies": {
     "nodemon": "^3.1.10"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
   }
 }

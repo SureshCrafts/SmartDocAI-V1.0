@@ -157,6 +157,8 @@ function Dashboard() {
     const [totalPages, setTotalPages] = useState(1);
     const [totalDocuments, setTotalDocuments] = useState(0);
     const [searchTerm, setSearchTerm] = useState('');
+    const [filteredDocuments, setFilteredDocuments] = useState([]);
+    const [isSearching, setIsSearching] = useState(false);
     const fileInputRef = useRef(null);
 
     const fetchDocuments = useCallback(async (page = 1) => {
@@ -167,6 +169,7 @@ function Dashboard() {
         try {
             const response = await documentService.getDocuments(page, 10);
             setDocuments(response.data || []);
+            setFilteredDocuments(response.data || []);
             setTotalPages(response.pagination?.pages || 1);
             setTotalDocuments(response.pagination?.total || 0);
             setCurrentPage(page);
@@ -257,24 +260,27 @@ function Dashboard() {
         }
     };
 
-    const handleSearch = (e) => {
-        e.preventDefault();
-        if (searchTerm.trim()) {
-            // For now, we'll just filter client-side
-            // In a real app, you'd want to implement server-side search
-            const filtered = documents.filter(doc => 
-                doc.fileName.toLowerCase().includes(searchTerm.toLowerCase())
-            );
-            setDocuments(filtered);
-        } else {
-            fetchDocuments(currentPage);
-        }
-    };
+    // handleSearch function removed - using real-time search instead
 
     const clearSearch = () => {
         setSearchTerm('');
-        fetchDocuments(currentPage);
+        setFilteredDocuments(documents);
+        setIsSearching(false);
     };
+
+    // Real-time search as user types
+    useEffect(() => {
+        if (searchTerm.trim()) {
+            const filtered = documents.filter(doc => 
+                doc.fileName.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            setFilteredDocuments(filtered);
+            setIsSearching(true);
+        } else {
+            setFilteredDocuments(documents);
+            setIsSearching(false);
+        }
+    }, [searchTerm, documents]);
 
     // Only show the full-page loader on the initial fetch
     if (loading && documents.length === 0) return <LoadingState>Loading documents...</LoadingState>;
@@ -317,18 +323,17 @@ function Dashboard() {
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
-                <SearchButton onClick={handleSearch}>Search</SearchButton>
                 {searchTerm && (
                     <SearchButton onClick={clearSearch}>Clear</SearchButton>
                 )}
             </SearchContainer>
 
-            {documents.length === 0 ? (
-                <p>No documents uploaded yet.</p>
+            {filteredDocuments.length === 0 ? (
+                <p>{isSearching ? 'No documents found matching your search.' : 'No documents uploaded yet.'}</p>
             ) : (
                 <>
                     <DocumentList>
-                        {documents.map((doc) => (
+                        {filteredDocuments.map((doc) => (
                             <DocumentItem key={doc._id} document={doc} onDelete={handleDelete} />
                         ))}
                     </DocumentList>

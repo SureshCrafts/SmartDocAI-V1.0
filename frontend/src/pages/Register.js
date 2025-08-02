@@ -14,6 +14,7 @@ import {
     FormText,
     FormLink
 } from '../components/FormStyles';
+import PasswordInput from '../components/PasswordInput';
 
 function Register() {
     const [formData, setFormData] = useState({
@@ -101,8 +102,7 @@ function Register() {
                     />
                 </FormGroup>
                 <FormGroup>
-                    <Input
-                        type="password"
+                    <PasswordInput
                         id="password"
                         name="password"
                         value={password}
@@ -112,8 +112,7 @@ function Register() {
                     />
                 </FormGroup>
                 <FormGroup>
-                    <Input
-                        type="password"
+                    <PasswordInput
                         id="confirmPassword"
                         name="confirmPassword"
                         value={confirmPassword}
